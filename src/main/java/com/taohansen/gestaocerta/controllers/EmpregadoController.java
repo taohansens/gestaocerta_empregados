@@ -32,7 +32,6 @@ public class EmpregadoController {
             @ApiResponse(responseCode = "200", description = "OK", content = {@Content(mediaType = "application/json",
                     array = @ArraySchema(schema = @Schema(implementation = Empregado.class)))})
     })
-    @GetMapping
     public ResponseEntity<Empregado> getById() {
         return ResponseEntity.ok(new Empregado());
     }
