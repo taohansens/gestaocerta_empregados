@@ -1,13 +1,15 @@
 package com.taohansen.gestaocerta.services;
 
+import com.taohansen.gestaocerta.dtos.EmpregadoDTO;
 import com.taohansen.gestaocerta.entities.Empregado;
+import com.taohansen.gestaocerta.mappers.EmpregadoMapper;
 import com.taohansen.gestaocerta.repositories.EmpregadoRepository;
 import com.taohansen.gestaocerta.services.exceptions.DatabaseException;
 import com.taohansen.gestaocerta.services.exceptions.ResourceNotFoundException;
 import com.taohansen.gestaocerta.services.impl.EmpregadoServiceImpl;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -15,21 +17,30 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class EmpregadoService implements EmpregadoServiceImpl {
     private final EmpregadoRepository repository;
 
+    @Autowired
+    private EmpregadoMapper empregadoMapper;
+
+
     @Transactional(readOnly = true)
-    public List<Empregado> getAll() {
-        return repository.findAll();
+    public List<EmpregadoDTO> getAll() {
+        List<Empregado> empregados = repository.findAll();
+        return empregados.stream()
+                .map(empregado -> empregadoMapper.toDto(empregado))
+                .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
-    public Empregado findById(Long id) {
+    public EmpregadoDTO findById(Long id) {
         Optional<Empregado> obj = repository.findById(id);
-        return obj.orElseThrow(() -> new ResourceNotFoundException(String.format("Empregado %d não encontrado.", id)));
+        Empregado entity = obj.orElseThrow(() -> new ResourceNotFoundException(String.format("Empregado %d não encontrado.", id)));
+        return empregadoMapper.toDto(entity);
     }
 
     @Transactional(propagation = Propagation.SUPPORTS)
@@ -45,23 +56,21 @@ public class EmpregadoService implements EmpregadoServiceImpl {
     }
 
     @Override
-    public Empregado insert(Empregado empregado) {
-        Empregado entity = new Empregado();
-        BeanUtils.copyProperties(empregado, entity, "id");
-        entity = repository.save(entity);
-        return entity;
+    public EmpregadoDTO insert(EmpregadoDTO dto) {
+        Empregado empregado = empregadoMapper.toEntity(dto);
+        Empregado entity = repository.save(empregado);
+        return empregadoMapper.toDto(entity);
     }
 
     @Override
-    public Empregado update(Long id, Empregado empregado) {
+    public EmpregadoDTO update(Long id, EmpregadoDTO dto) {
         try {
             Empregado entity = repository.getReferenceById(id);
-            BeanUtils.copyProperties(empregado, entity, "id");
+            empregadoMapper.updateEntityFromDto(dto, entity);
             entity = repository.save(entity);
-            return entity;
+            return empregadoMapper.toDto(entity);
         } catch (EntityNotFoundException e) {
             throw new ResourceNotFoundException(String.format("Empregado id %d not found.", id));
         }
     }
-
 }

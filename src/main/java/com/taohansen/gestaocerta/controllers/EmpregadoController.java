@@ -1,5 +1,6 @@
 package com.taohansen.gestaocerta.controllers;
 
+import com.taohansen.gestaocerta.dtos.EmpregadoDTO;
 import com.taohansen.gestaocerta.entities.Empregado;
 import com.taohansen.gestaocerta.services.EmpregadoService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -28,8 +29,8 @@ public class EmpregadoController {
                     mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Empregado.class)))}
             )})
     @GetMapping
-    public ResponseEntity<List<Empregado>> getAll() {
-        List<Empregado> empregados = service.getAll();
+    public ResponseEntity<List<EmpregadoDTO>> getAll() {
+        List<EmpregadoDTO> empregados = service.getAll();
         return ResponseEntity.ok().body(empregados);
     }
 
@@ -39,22 +40,22 @@ public class EmpregadoController {
                     array = @ArraySchema(schema = @Schema(implementation = Empregado.class)))})
     })
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Empregado> findById(@PathVariable Long id) {
-        Empregado empregado = service.findById(id);
-        return ResponseEntity.ok().body(empregado);
+    public ResponseEntity<EmpregadoDTO> findById(@PathVariable Long id) {
+        EmpregadoDTO empregadoDTO = service.findById(id);
+        return ResponseEntity.ok().body(empregadoDTO);
     }
 
     @PostMapping
-    public ResponseEntity<Empregado> insert(@RequestBody Empregado dto) {
-        Empregado entity = service.insert(dto);
+    public ResponseEntity<EmpregadoDTO> insert(@RequestBody EmpregadoDTO dto) {
+        dto = service.insert(dto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-                .buildAndExpand(entity.getId()).toUri();
-        return ResponseEntity.created(uri).body(entity);
+                .buildAndExpand(1).toUri();
+        return ResponseEntity.created(uri).body(dto);
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Empregado> update(@PathVariable Long id, @RequestBody Empregado dto) {
-        Empregado entity = service.update(id, dto);
+    public ResponseEntity<EmpregadoDTO> update(@PathVariable Long id, @RequestBody EmpregadoDTO dto) {
+        EmpregadoDTO entity = service.update(id, dto);
         return ResponseEntity.ok().body(entity);
     }
 
