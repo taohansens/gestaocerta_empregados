@@ -3,13 +3,14 @@ package com.taohansen.gestaocerta.entities;
 import com.taohansen.gestaocerta.entities.enums.Sexo;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
+import org.hibernate.annotations.DynamicUpdate;
 
 import java.time.LocalDate;
 
 @Data
 @NoArgsConstructor @AllArgsConstructor
+@DynamicUpdate
 @Entity
 public class Empregado {
     @Id
