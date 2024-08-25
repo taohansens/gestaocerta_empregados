@@ -1,7 +1,6 @@
 package com.taohansen.gestaocerta.services.impl;
 
 import com.taohansen.gestaocerta.dtos.EmpregadoDTO;
-import com.taohansen.gestaocerta.entities.Empregado;
 
 import java.util.List;
 
