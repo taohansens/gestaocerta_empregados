@@ -5,12 +5,10 @@ import jakarta.persistence.Embeddable;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PastOrPresent;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
 
-@NoArgsConstructor
 @Embeddable
 @Getter @Setter
 public class Documento {

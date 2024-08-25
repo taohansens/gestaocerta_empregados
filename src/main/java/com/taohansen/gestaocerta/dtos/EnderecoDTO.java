@@ -2,12 +2,9 @@ package com.taohansen.gestaocerta.dtos;
 
 import com.taohansen.gestaocerta.entities.enums.Estado;
 import jakarta.persistence.Embeddable;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Data;
 
-@NoArgsConstructor
-@Getter @Setter
+@Data
 @Embeddable
 public class EnderecoDTO {
     private String logradouro;

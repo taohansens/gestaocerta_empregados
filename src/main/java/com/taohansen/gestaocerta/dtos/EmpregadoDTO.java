@@ -2,14 +2,11 @@ package com.taohansen.gestaocerta.dtos;
 
 import com.taohansen.gestaocerta.entities.enums.Sexo;
 import jakarta.persistence.Embedded;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Data;
 
 import java.time.LocalDate;
 
-@NoArgsConstructor
-@Getter @Setter
+@Data
 public class EmpregadoDTO {
     private Long id;
     private String nome;

@@ -1,14 +1,10 @@
 package com.taohansen.gestaocerta.dtos;
 import jakarta.persistence.Embeddable;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Data;
 
 import java.time.LocalDate;
 
-@NoArgsConstructor
-@Getter
-@Setter
+@Data
 @Embeddable
 public class DocumentoDTO {
     private String tipo;
