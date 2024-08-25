@@ -1,7 +1,5 @@
 package com.taohansen.gestaocerta.dtos;
 
-import com.taohansen.gestaocerta.entities.Documento;
-import com.taohansen.gestaocerta.entities.Endereco;
 import com.taohansen.gestaocerta.entities.enums.Sexo;
 import jakarta.persistence.Embedded;
 import lombok.Getter;
