@@ -1,7 +1,7 @@
 package com.taohansen.gestaocerta.controllers;
 
-import com.taohansen.gestaocerta.dtos.ArquivoDTO;
 import com.taohansen.gestaocerta.dtos.ArquivoMinDTO;
+import com.taohansen.gestaocerta.dtos.ArquivoUploadDTO;
 import com.taohansen.gestaocerta.entities.Arquivo;
 import com.taohansen.gestaocerta.services.ArquivoService;
 import lombok.RequiredArgsConstructor;
@@ -19,19 +19,18 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/empregados/{empregadoId}/arquivos")
+@RequestMapping("/arquivos/{empregadoId}")
 public class ArquivoController {
     private final ArquivoService service;
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<ArquivoMinDTO> adicionarArquivo(@PathVariable Long empregadoId,
-                                                          @RequestParam("file") MultipartFile file,
-                                                          @RequestParam("nome") String nome,
-                                                          @RequestParam("tipoMime") String tipoMime) throws IOException {
-        ArquivoDTO arquivoDTO = new ArquivoDTO();
+    public ResponseEntity<ArquivoMinDTO> uploadArquivo (@PathVariable Long empregadoId,
+                                                @RequestParam("file") MultipartFile file,
+                                                @RequestParam("nome") String nome,
+                                                @RequestParam("descricao") String descricao) throws IOException {
+        ArquivoUploadDTO arquivoDTO = new ArquivoUploadDTO();
         arquivoDTO.setNome(nome);
-        arquivoDTO.setTipoMime(tipoMime);
-        arquivoDTO.setTamanho(file.getSize());
+        arquivoDTO.setDescricao(descricao);
         ArquivoMinDTO entity = service.insert(empregadoId, arquivoDTO, file);
         return ResponseEntity.status(HttpStatus.CREATED).body(entity);
     }
@@ -48,8 +47,7 @@ public class ArquivoController {
         ByteArrayResource resource = new ByteArrayResource(arquivo.getConteudo());
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType(arquivo.getTipoMime()))
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + arquivo.getNome() + "\"")
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + arquivo.getFilename() + "\"")
                 .body(resource);
     }
 }
-

@@ -4,11 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-public class ArquivoMinDTO {
-    private String id;
+public class ArquivoUploadDTO {
     private String nome;
     private String descricao;
-    private String filename;
-    private String tipoMime;
-    private Long tamanho;
 }

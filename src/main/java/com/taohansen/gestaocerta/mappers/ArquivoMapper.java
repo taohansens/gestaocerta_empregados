@@ -15,6 +15,8 @@ public class ArquivoMapper {
         ArquivoMinDTO dto = new ArquivoMinDTO();
         dto.setId(arquivo.getId());
         dto.setNome(arquivo.getNome());
+        dto.setFilename(arquivo.getFilename());
+        dto.setDescricao(arquivo.getDescricao());
         dto.setTamanho(arquivo.getTamanho());
         dto.setTipoMime(arquivo.getTipoMime());
         return dto;
@@ -28,6 +30,8 @@ public class ArquivoMapper {
         arquivo.setId(dto.getId());
         arquivo.setNome(dto.getNome());
         arquivo.setTamanho(dto.getTamanho());
+        arquivo.setFilename(dto.getFilename());
+        arquivo.setDescricao(dto.getDescricao());
         arquivo.setTipoMime(dto.getTipoMime());
         arquivo.setConteudo(dto.getConteudo());
         return arquivo;

@@ -15,6 +15,12 @@ public class Arquivo {
     @Field("nome")
     private String nome;
 
+    @Field("filename")
+    private String filename;
+
+    @Field("descricao")
+    private String descricao;
+
     @Field("tipo_mime")
     private String tipoMime;
 

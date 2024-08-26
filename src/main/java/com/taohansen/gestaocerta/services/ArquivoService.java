@@ -1,7 +1,7 @@
 package com.taohansen.gestaocerta.services;
 
-import com.taohansen.gestaocerta.dtos.ArquivoDTO;
 import com.taohansen.gestaocerta.dtos.ArquivoMinDTO;
+import com.taohansen.gestaocerta.dtos.ArquivoUploadDTO;
 import com.taohansen.gestaocerta.entities.Arquivo;
 import com.taohansen.gestaocerta.entities.Empregado;
 import com.taohansen.gestaocerta.mappers.ArquivoMapper;
@@ -23,15 +23,18 @@ public class ArquivoService {
     private final EmpregadoRepository empregadoRepository;
     private final ArquivoMapper arquivoMapper;
 
-    public ArquivoMinDTO insert(Long empregadoId, ArquivoDTO dto, MultipartFile file) throws IOException {
+    public ArquivoMinDTO insert(Long empregadoId, ArquivoUploadDTO dto, MultipartFile file) throws IOException {
         Empregado empregado = empregadoRepository.findById(empregadoId)
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("Empregado %d não encontrado", empregadoId)));
-        Arquivo arquivo = arquivoMapper.toEntity(dto);
+        Arquivo arquivo = new Arquivo();
+        arquivo.setNome(dto.getNome());
+        arquivo.setDescricao(dto.getDescricao());
         arquivo.setTipoMime(file.getContentType());
         arquivo.setConteudo(file.getBytes());
+        arquivo.setFilename(file.getOriginalFilename());
         arquivo.setTamanho(file.getSize());
         arquivo.setEmpregadoId(empregado.getId());
-        repository.save(arquivo);
+        arquivo = repository.save(arquivo);
         return arquivoMapper.toMinDto(arquivo);
     }
 
