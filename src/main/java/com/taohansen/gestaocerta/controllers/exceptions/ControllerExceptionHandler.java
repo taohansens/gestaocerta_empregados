@@ -1,6 +1,7 @@
 package com.taohansen.gestaocerta.controllers.exceptions;
 
 import com.taohansen.gestaocerta.services.exceptions.DatabaseException;
+import com.taohansen.gestaocerta.services.exceptions.FileManagerException;
 import com.taohansen.gestaocerta.services.exceptions.ResourceNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
@@ -31,6 +32,18 @@ public class ControllerExceptionHandler {
         err.setTimestamp(Instant.now());
         err.setStatus(status.value());
         err.setError("Database Error.");
+        err.setMessage(e.getMessage());
+        err.setPath(request.getRequestURI());
+        return ResponseEntity.status(status).body(err);
+    }
+
+    @ExceptionHandler(FileManagerException.class)
+    public ResponseEntity<StandardError> database(FileManagerException e, HttpServletRequest request) {
+        HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
+        StandardError err = new StandardError();
+        err.setTimestamp(Instant.now());
+        err.setStatus(status.value());
+        err.setError("I/O Error.");
         err.setMessage(e.getMessage());
         err.setPath(request.getRequestURI());
         return ResponseEntity.status(status).body(err);
