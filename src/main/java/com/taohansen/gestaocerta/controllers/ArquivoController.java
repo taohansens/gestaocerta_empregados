@@ -27,7 +27,7 @@ public class ArquivoController {
     public ResponseEntity<ArquivoMinDTO> uploadArquivo (@PathVariable Long empregadoId,
                                                 @RequestParam("file") MultipartFile file,
                                                 @RequestParam("nome") String nome,
-                                                @RequestParam("descricao") String descricao) throws IOException {
+                                                @RequestParam("descricao") String descricao) {
         ArquivoUploadDTO arquivoDTO = new ArquivoUploadDTO();
         arquivoDTO.setNome(nome);
         arquivoDTO.setDescricao(descricao);
@@ -42,8 +42,8 @@ public class ArquivoController {
     }
 
     @GetMapping("/{arquivoId}/download")
-    public ResponseEntity<Resource> downloadArquivo(@PathVariable String arquivoId) {
-        Arquivo arquivo = service.baixarArquivo(arquivoId);
+    public ResponseEntity<Resource> downloadArquivo(@PathVariable Long empregadoId, @PathVariable String arquivoId) {
+        Arquivo arquivo = service.baixarArquivo(arquivoId, empregadoId);
         ByteArrayResource resource = new ByteArrayResource(arquivo.getConteudo());
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType(arquivo.getTipoMime()))

@@ -1,0 +1,24 @@
+package com.taohansen.gestaocerta.entities;
+
+import jakarta.persistence.*;
+import lombok.Data;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
+
+@Entity
+@Data
+public class PontoEletronico {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+    private LocalDate data;
+    private LocalTime horaEntrada;
+    private LocalTime horaSaida;
+
+
+    @ManyToOne
+    @JoinColumn(name = "empregado_id", nullable = false)
+    private Empregado empregado;
+}

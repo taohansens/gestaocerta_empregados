@@ -7,6 +7,7 @@ import com.taohansen.gestaocerta.entities.Empregado;
 import com.taohansen.gestaocerta.mappers.ArquivoMapper;
 import com.taohansen.gestaocerta.repositories.ArquivoRepository;
 import com.taohansen.gestaocerta.repositories.EmpregadoRepository;
+import com.taohansen.gestaocerta.services.exceptions.FileAccessException;
 import com.taohansen.gestaocerta.services.exceptions.FileManagerException;
 import com.taohansen.gestaocerta.services.exceptions.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -51,8 +53,13 @@ public class ArquivoService {
     }
 
     //TODO adjust to Return DTO
-    public Arquivo baixarArquivo(String arquivoId) {
-        return repository.findById(arquivoId)
+    public Arquivo baixarArquivo(String arquivoId, Long empregadoId) {
+        Arquivo arquivo =  repository.findById(arquivoId)
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("Arquivo não encontrado %s", arquivoId)));
+        if(Objects.equals(arquivo.getEmpregadoId(), empregadoId)){
+            return arquivo;
+        } else {
+            throw new FileAccessException("Arquivo não pertence ao usuário informado.");
+        }
     }
 }

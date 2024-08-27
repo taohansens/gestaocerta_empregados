@@ -1,8 +1,6 @@
 package com.taohansen.gestaocerta.controllers.exceptions;
 
-import com.taohansen.gestaocerta.services.exceptions.DatabaseException;
-import com.taohansen.gestaocerta.services.exceptions.FileManagerException;
-import com.taohansen.gestaocerta.services.exceptions.ResourceNotFoundException;
+import com.taohansen.gestaocerta.services.exceptions.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -44,6 +42,30 @@ public class ControllerExceptionHandler {
         err.setTimestamp(Instant.now());
         err.setStatus(status.value());
         err.setError("I/O Error.");
+        err.setMessage(e.getMessage());
+        err.setPath(request.getRequestURI());
+        return ResponseEntity.status(status).body(err);
+    }
+
+    @ExceptionHandler(FileAccessException.class)
+    public ResponseEntity<StandardError> database(FileAccessException e, HttpServletRequest request) {
+        HttpStatus status = HttpStatus.FORBIDDEN;
+        StandardError err = new StandardError();
+        err.setTimestamp(Instant.now());
+        err.setStatus(status.value());
+        err.setError("Denied access.");
+        err.setMessage(e.getMessage());
+        err.setPath(request.getRequestURI());
+        return ResponseEntity.status(status).body(err);
+    }
+
+    @ExceptionHandler(PontoEletronicoException.class)
+    public ResponseEntity<StandardError> database(PontoEletronicoException e, HttpServletRequest request) {
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        StandardError err = new StandardError();
+        err.setTimestamp(Instant.now());
+        err.setStatus(status.value());
+        err.setError("Illegal State.");
         err.setMessage(e.getMessage());
         err.setPath(request.getRequestURI());
         return ResponseEntity.status(status).body(err);
