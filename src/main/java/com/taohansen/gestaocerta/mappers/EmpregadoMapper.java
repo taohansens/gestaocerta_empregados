@@ -8,6 +8,8 @@ import com.taohansen.gestaocerta.entities.Empregado;
 import com.taohansen.gestaocerta.entities.Endereco;
 import org.springframework.stereotype.Component;
 
+import java.time.Duration;
+
 @Component
 public class EmpregadoMapper {
 
@@ -23,6 +25,10 @@ public class EmpregadoMapper {
         dto.setEndereco(toEnderecoDto(empregado.getEndereco()));
         dto.setSexo(empregado.getSexo());
         dto.setNascimento(empregado.getNascimento());
+        dto.setJornadaSemanal(empregado.getJornadaSemanal() != null
+                ? (int) empregado.getJornadaSemanal().toHours() : 0);
+        dto.setJornadaDiaria(empregado.getJornadaDiaria() != null
+                ? (int) empregado.getJornadaDiaria().toHours() : 0);
         return dto;
     }
 
@@ -38,6 +44,10 @@ public class EmpregadoMapper {
         empregado.setEndereco(toEnderecoEntity(dto.getEndereco()));
         empregado.setSexo(dto.getSexo());
         empregado.setNascimento(dto.getNascimento());
+        empregado.setJornadaSemanal(dto.getJornadaDiaria() != null ?
+                Duration.ofHours(dto.getJornadaDiaria()) : null);
+        empregado.setJornadaDiaria(dto.getJornadaDiaria() != null ?
+                Duration.ofHours(dto.getJornadaSemanal()) : null);
         return empregado;
     }
 

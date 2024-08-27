@@ -17,4 +17,6 @@ public class EmpregadoDTO {
     private EnderecoDTO endereco;
     private Sexo sexo;
     private LocalDate nascimento;
+    private Integer jornadaDiaria;
+    private Integer jornadaSemanal;
 }

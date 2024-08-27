@@ -19,10 +19,8 @@ public class Empregado {
     private String nome;
     @NotBlank
     private String cpf;
-    @NotBlank
-    private Duration jornadaDiaria = Duration.ofHours(8);
-    @NotBlank
-    private Duration jornadaSemanal = Duration.ofHours(40);
+    private Duration jornadaDiaria;
+    private Duration jornadaSemanal;
     @Embedded
     private Documento documento;
     @Embedded

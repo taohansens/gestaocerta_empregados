@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.taohansen</groupId>
     <artifactId>GestaoCerta</artifactId>
-    <version>0.1a</version>
+    <version>1.1.ALPHA</version>
     <name>GestaoCerta</name>
     <description>GestaoCerta</description>
     <url/>
@@ -28,6 +28,7 @@
     </scm>
     <properties>
         <java.version>22</java.version>
+        <spring-cloud.version>2023.0.3</spring-cloud.version>
     </properties>
     <dependencies>
         <dependency>
@@ -62,8 +63,22 @@
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
             <version>2.6.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+        </dependency>
     </dependencies>
-
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
     <build>
         <plugins>
             <plugin>
