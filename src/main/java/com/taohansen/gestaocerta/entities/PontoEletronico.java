@@ -3,6 +3,7 @@ package com.taohansen.gestaocerta.entities;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -16,6 +17,8 @@ public class PontoEletronico {
     private LocalDate data;
     private LocalTime horaEntrada;
     private LocalTime horaSaida;
+    private Duration horasTrabalhadas;
+    private Duration horasExtras;
 
 
     @ManyToOne

@@ -11,6 +11,7 @@ import com.taohansen.gestaocerta.services.exceptions.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -23,6 +24,8 @@ public class PontoEletronicoService {
     private final EmpregadoRepository empregadoRepository;
     private final PontoEletronicoMapper pontoEletronicoMapper;
 
+    private final Duration DURACAO_INTERVALO_PADRAO = Duration.ofHours(1);
+
     public PontoEletronicoMinDTO registrarEntrada(Long empregadoId) {
         Empregado empregado = empregadoRepository.findById(empregadoId)
                 .orElseThrow(() -> new ResourceNotFoundException("Empregado não encontrado"));
@@ -31,9 +34,7 @@ public class PontoEletronicoService {
         Optional<PontoEletronico> pontoEmAberto = pontoEletronicoRepository
                 .findByEmpregadoIdAndDataAndHoraSaidaIsNull(empregadoId, hoje);
 
-        if (pontoEmAberto.isPresent()) {
-            throw new PontoEletronicoException("Já existe uma entrada registrada sem saída.");
-        }
+        if (pontoEmAberto.isPresent()) throw new PontoEletronicoException("Já existe uma entrada registrada sem saída.");
 
         LocalTime agora = LocalTime.now();
 
@@ -56,6 +57,11 @@ public class PontoEletronicoService {
 
         ponto.setHoraSaida(LocalTime.now());
 
+        Duration horasTrabalhadas = calcularHorasTrabalhadas(empregadoId, hoje);
+        Duration horasExtras = calcularHorasExtras(empregadoId, hoje, empregado.getJornadaDiaria().toHours());
+        ponto.setHorasTrabalhadas(horasTrabalhadas);
+        ponto.setHorasExtras(horasExtras);
+
         PontoEletronico entity = pontoEletronicoRepository.save(ponto);
         return pontoEletronicoMapper.toMinDto(entity);
     }
@@ -66,5 +72,33 @@ public class PontoEletronicoService {
 
     public List<PontoEletronico> listarPontos(Long empregadoId) {
         return pontoEletronicoRepository.findByEmpregadoId(empregadoId);
+    }
+
+    public Duration calcularHorasTrabalhadas(Long empregadoId, LocalDate data) {
+        List<PontoEletronico> pontosDoDia = pontoEletronicoRepository.findByEmpregadoIdAndData(empregadoId, data);
+
+        Duration horasTrabalhadas = Duration.ZERO;
+
+        for (PontoEletronico ponto : pontosDoDia) {
+            if (ponto.getHoraEntrada() != null && ponto.getHoraSaida() != null) {
+                horasTrabalhadas = horasTrabalhadas.plus(Duration.between(ponto.getHoraEntrada(), ponto.getHoraSaida()));
+            }
+        }
+
+        if (pontosDoDia.size() == 2 && horasTrabalhadas.toHours() >= 6) {
+            horasTrabalhadas = horasTrabalhadas.minus(DURACAO_INTERVALO_PADRAO);
+        }
+
+        return horasTrabalhadas;
+    }
+
+    public Duration calcularHorasExtras(Long empregadoId, LocalDate data, Long cargaHoraria) {
+        Duration horasTrabalhadas = calcularHorasTrabalhadas(empregadoId, data);
+
+        if (horasTrabalhadas.toHours() > cargaHoraria) {
+            return horasTrabalhadas.minusHours(cargaHoraria);
+        }
+
+        return Duration.ZERO;
     }
 }

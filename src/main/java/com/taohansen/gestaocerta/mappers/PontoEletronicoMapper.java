@@ -16,14 +16,19 @@ public class PontoEletronicoMapper {
         PontoEletronicoMinDTO dto = new PontoEletronicoMinDTO();
         dto.setData(pontoEletronico.getData().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
         dto.setHoraEntrada(pontoEletronico.getHoraEntrada() != null
-                        ? pontoEletronico.getHoraEntrada().format(DateTimeFormatter.ofPattern("HH:mm"))
-                        : "-"
+                ? pontoEletronico.getHoraEntrada().format(DateTimeFormatter.ofPattern("HH:mm"))
+                : "-"
         );
 
         dto.setHoraSaida(pontoEletronico.getHoraSaida() != null
-                        ? pontoEletronico.getHoraSaida().format(DateTimeFormatter.ofPattern("HH:mm"))
-                        : "-"
+                ? pontoEletronico.getHoraSaida().format(DateTimeFormatter.ofPattern("HH:mm"))
+                : "-"
         );
+        dto.setHorasTrabalhadas(pontoEletronico.getHorasTrabalhadas() != null
+                ? String.valueOf(pontoEletronico.getHorasTrabalhadas().toHours()) : "-");
+
+        dto.setHorasExtras(pontoEletronico.getHorasExtras() != null
+                ? String.valueOf(pontoEletronico.getHorasExtras().toHours()): "-");
         return dto;
     }
 }
