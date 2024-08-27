@@ -80,6 +80,7 @@
         </dependencies>
     </dependencyManagement>
     <build>
+        <finalName>micro-empregado</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
