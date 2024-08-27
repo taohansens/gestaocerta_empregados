@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.taohansen</groupId>
-    <artifactId>GestaoCerta</artifactId>
+    <artifactId>micro-empregados</artifactId>
     <version>1.1.ALPHA</version>
-    <name>GestaoCerta</name>
-    <description>GestaoCerta</description>
+    <name>micro-empregados</name>
+    <description>micro-empregados</description>
     <url/>
     <licenses>
         <license/>
