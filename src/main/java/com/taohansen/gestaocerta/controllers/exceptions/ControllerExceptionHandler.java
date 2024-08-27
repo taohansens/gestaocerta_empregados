@@ -34,28 +34,4 @@ public class ControllerExceptionHandler {
         err.setPath(request.getRequestURI());
         return ResponseEntity.status(status).body(err);
     }
-
-    @ExceptionHandler(FileManagerException.class)
-    public ResponseEntity<StandardError> database(FileManagerException e, HttpServletRequest request) {
-        HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
-        StandardError err = new StandardError();
-        err.setTimestamp(Instant.now());
-        err.setStatus(status.value());
-        err.setError("I/O Error.");
-        err.setMessage(e.getMessage());
-        err.setPath(request.getRequestURI());
-        return ResponseEntity.status(status).body(err);
-    }
-
-    @ExceptionHandler(FileAccessException.class)
-    public ResponseEntity<StandardError> database(FileAccessException e, HttpServletRequest request) {
-        HttpStatus status = HttpStatus.FORBIDDEN;
-        StandardError err = new StandardError();
-        err.setTimestamp(Instant.now());
-        err.setStatus(status.value());
-        err.setError("Denied access.");
-        err.setMessage(e.getMessage());
-        err.setPath(request.getRequestURI());
-        return ResponseEntity.status(status).body(err);
-    }
 }
