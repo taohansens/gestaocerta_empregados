@@ -44,10 +44,10 @@ public class EmpregadoMapper {
         empregado.setEndereco(toEnderecoEntity(dto.getEndereco()));
         empregado.setSexo(dto.getSexo());
         empregado.setNascimento(dto.getNascimento());
-        empregado.setJornadaSemanal(dto.getJornadaDiaria() != null ?
-                Duration.ofHours(dto.getJornadaDiaria()) : null);
-        empregado.setJornadaDiaria(dto.getJornadaDiaria() != null ?
+        empregado.setJornadaSemanal(dto.getJornadaSemanal() != null ?
                 Duration.ofHours(dto.getJornadaSemanal()) : null);
+        empregado.setJornadaDiaria(dto.getJornadaDiaria() != null ?
+                Duration.ofHours(dto.getJornadaDiaria()) : null);
         return empregado;
     }
 
