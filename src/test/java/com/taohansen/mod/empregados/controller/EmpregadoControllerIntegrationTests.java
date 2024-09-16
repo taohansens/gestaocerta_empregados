@@ -4,8 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.taohansen.mod.empregados.dtos.EmpregadoDTO;
 import com.taohansen.mod.empregados.entities.Empregado;
 import com.taohansen.mod.empregados.repositories.EmpregadoRepository;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,9 +36,6 @@ public class EmpregadoControllerIntegrationTests {
 
     @Autowired
     private ObjectMapper objectMapper;
-
-    @PersistenceContext
-    private EntityManager entityManager;
 
     private Long existingId;
     private Long nonExistingId;
