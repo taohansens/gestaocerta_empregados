@@ -1,0 +1,37 @@
+services:
+  micro-empregados:
+    build: .
+    image: taohans/gestaocerta:micro-empregados
+    container_name: micro-empregados
+    environment:
+      - APP_PROFILE=dev
+      - SERVER_PORT=8081
+      - DB_HOST=postgres-db
+      - DB_PORT=5432
+      - DB_NAME=microservice_db
+      - DB_USER=postgres
+      - DB_PASS=postgres
+    networks:
+      - gestaocerta-private
+      - int-empregados-net
+
+  postgres-db:
+    image: postgres:15
+    container_name: postgres-db
+    environment:
+      POSTGRES_DB: microservice_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    networks:
+      - int-empregados-net
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+networks:
+  gestaocerta-private:
+    external: true
+  int-empregados-net:
+
+volumes:
+  postgres_data:
+    driver: local
